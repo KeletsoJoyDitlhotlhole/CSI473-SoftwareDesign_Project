@@ -1,0 +1,6 @@
+:host {
+    display: contents;
+  }
+  builder-component {
+    max-width: none !important;
+  }

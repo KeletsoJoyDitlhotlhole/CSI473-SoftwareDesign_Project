@@ -1,0 +1,213 @@
+:host {
+    display: contents;
+  }
+
+  a {
+    text-decoration: none;
+     
+  }
+  
+.logo-nav-container {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  width: 100%;
+  margin-bottom: 20px; 
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+}
+  
+  .landing-page {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .header {
+    background-color: #aad2db;
+    z-index: 10;
+    width: 100%;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column; 
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    font-family: Inter, sans-serif;
+    color: #1a1818;
+  }
+  
+  .logo-image {
+    object-fit: contain;
+    width: 90px; /* Adjusted size */
+    height: auto;
+  }
+  
+  .clinic-name {
+    margin-left: 15px;
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 20px; 
+  }
+
+  
+  
+  .main-nav {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    font-size: 20px;
+    
+  }
+  
+  .nav-item {
+    color: #1a1818;
+    text-decoration: none;
+  }
+  
+  .auth-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+  }
+  
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .auth-button {
+    border-radius: 30px;
+    background-color: #00b4d8;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .auth-button.signup {
+    background-color: #fff;
+    color: #00b4d8;
+    border: 2px solid #00b4d8;
+  }
+  
+  .contacts-link {
+    color: #1a1818;
+    text-decoration: none;
+  }
+  
+  .hero-image {
+    width: 50%; /* Ensure image and list take equal space */
+    height: 100%; /* Make image take the full height */
+    object-fit: cover; /* Ensure the image scales well within its container */
+  }
+  
+  .main-content {
+    display: flex;
+    justify-content: center; /* Center both sections */
+    align-items: center; /* Vertically center the items */
+    padding: 20px;
+    width: 100%;
+    height: 100vh; /* Make the container fill the viewport height */
+  }
+  .services-section {
+    display: flex;
+    flex-direction: row; /* Ensure the image and list are side by side */
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Small gap between the image and the services list */
+    width: 80%; /* Make the section 80% of the available width */
+    height: 500px; /* Define a fixed height for the section */
+  }
+  
+  
+  
+  .services-list {
+    background-color: #000;
+    color: #fff;
+    padding: 50px 30px;
+    font: 600 24px 'Inter', sans-serif;
+    list-style-type: none;
+    width: 50%; /* Ensure the list takes the same width as the image */
+    height: 100%; /* Ensure the list takes the full height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the content vertically */
+    gap: 30px;
+  }
+  
+  .footer {
+    background-color: #aad2db;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .footer-content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .doctor-image {
+    object-fit: contain;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 991px) {
+    .header {
+      flex-direction: column;
+      padding: 20px;
+    }
+  
+    .header-content {
+      flex-direction: column;
+    }
+  
+    .main-nav {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .auth-container {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+  
+    .main-content {
+      flex-direction: column;
+    }
+  
+    .hero-image {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  
+    .services-list {
+      padding: 30px 20px;
+    }
+  }
+  

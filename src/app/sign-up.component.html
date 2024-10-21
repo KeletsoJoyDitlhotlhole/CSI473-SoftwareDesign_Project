@@ -1,0 +1,79 @@
+<main class="flex overflow-hidden flex-col pt-2 pb-16">
+    <header class="flex flex-wrap gap-1.5 items-start px-4 pt-4 pb-20 text-6xl font-extrabold text-black bg-stone-300 max-md:text-4xl">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f57fc796a0a917f15a7f0ca841742546d6aa6295003d995c499995bf9b52b472?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" class="object-contain shrink-0 max-w-full aspect-square w-[150px]" alt="MediSafe Private Clinic logo" />
+      <h1 class="flex-auto mt-11 w-[1217px] max-md:mt-10 max-md:max-w-full max-md:text-4xl">
+        MEDISAFE PRIVATE CLINIC
+      </h1>
+    </header>
+    <h2 class="self-center mt-8 text-5xl font-bold text-center text-black max-md:text-4xl">
+      Sign Up
+    </h2>
+    <form (ngSubmit)="onSubmit()" class="flex flex-col items-start mt-11 ml-12 w-full max-w-[1239px] max-md:mt-10 max-md:max-w-full">
+      <div class="flex flex-wrap gap-5 justify-between items-start w-full text-lg text-black max-w-[1069px] max-md:max-w-full">
+        <div class="flex gap-10 mt-3 max-md:max-w-full">
+          <label for="fullName" class="self-start">Full Name:</label>
+          <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName" class="flex shrink-0 max-w-full bg-white rounded-xl h-[33px] w-[318px]" required />
+        </div>
+        <div class="flex gap-4">
+          <label for="username" class="my-auto">Username:</label>
+          <input type="text" id="username" [(ngModel)]="username" name="username" class="flex shrink-0 max-w-full bg-white rounded-xl h-[33px] w-[318px]" required />
+        </div>
+      </div>
+      <div class="mt-10 w-full max-w-[1069px] max-md:mt-10 max-md:max-w-full">
+        <div class="flex gap-5 max-md:flex-col">
+          <div class="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
+            <div class="grow max-md:mt-10 max-md:max-w-full">
+              <div class="flex gap-5 max-md:flex-col">
+                <div class="flex flex-col w-[29%] max-md:ml-0 max-md:w-full">
+                  <div class="flex flex-col items-start self-stretch my-auto text-lg text-black max-md:mt-10">
+                    <label for="phoneNumber" class="self-stretch">Phone Number:</label>
+                    <label for="dateOfBirth" class="mt-12 max-md:mt-10">Date of Birth:</label>
+                    <label for="gender" class="mt-14 max-md:mt-10">Gender:</label>
+                    <label for="email" class="mt-14 max-md:mt-10">Email:</label>
+                  </div>
+                </div>
+                <div class="flex flex-col ml-5 w-[71%] max-md:ml-0 max-md:w-full">
+                  <div class="flex flex-col grow max-md:mt-8">
+                    <input type="tel" id="phoneNumber" [(ngModel)]="phoneNumber" name="phoneNumber" class="flex shrink-0 max-w-full bg-white rounded-xl h-[33px] w-[318px] max-md:mr-0.5" required />
+                    <input type="date" id="dateOfBirth" [(ngModel)]="dateOfBirth" name="dateOfBirth" class="flex shrink-0 mt-8 max-w-full bg-white rounded-xl h-[33px] w-[316px] max-md:mr-1" required />
+                    <select id="gender" [(ngModel)]="gender" name="gender" class="flex shrink-0 mt-10 max-w-full bg-white rounded-xl h-[33px] w-[318px]" required>
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <input type="email" id="email" [(ngModel)]="email" name="email" class="flex shrink-0 mt-11 max-w-full bg-white rounded-xl h-[33px] w-[318px] max-md:mt-10 max-md:mr-0.5" required />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
+            <div class="flex flex-col w-full text-lg text-black max-md:mt-10 max-md:max-w-full">
+              <div class="flex gap-5 self-end">
+                <label for="password" class="my-auto">Password:</label>
+                <input type="password" id="password" [(ngModel)]="password" name="password" class="flex shrink-0 max-w-full bg-white rounded-xl h-[33px] w-[318px]" required />
+              </div>
+              <div class="flex flex-wrap gap-2 mt-20 max-md:mt-10">
+                <label for="confirmPassword" class="grow shrink my-auto w-[126px]">
+                  Confirm Password:
+                </label>
+                <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" class="flex shrink-0 max-w-full bg-white rounded-xl h-[33px] w-[318px]" required />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-8 mt-11 text-lg text-black max-md:mt-10">
+        <label for="postalAddress" class="my-auto basis-auto">Postal Address:</label>
+        <input type="text" id="postalAddress" [(ngModel)]="postalAddress" name="postalAddress" class="flex shrink-0 max-w-full bg-white rounded-xl h-[33px] w-[318px]" required />
+      </div>
+      <div class="flex gap-4 mt-10 text-lg text-black max-md:mt-10">
+        <label for="physicalAddress" class="self-start mt-3 basis-auto">Physical Address:</label>
+        <input type="text" id="physicalAddress" [(ngModel)]="physicalAddress" name="physicalAddress" class="flex shrink-0 max-w-full bg-white rounded-xl h-[33px] w-[318px]" required />
+      </div>
+      <button type="submit" class="self-end px-8 pt-2 pb-4 mt-12 text-2xl text-black whitespace-nowrap bg-cyan-500 rounded-[30px] max-md:px-5 max-md:mt-10">
+        SignUp
+      </button>
+    </form>
+  </main>
