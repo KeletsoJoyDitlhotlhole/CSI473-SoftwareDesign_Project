@@ -12,14 +12,14 @@ export function initializeKeycloak(keycloak: KeycloakService) {
     return keycloak.init({
       config: {
         url: 'http://localhost:8080', // Keycloak server URL
-        realm: 'master', // Replace with your Keycloak realm
-        clientId: 'angularapp', // Replace with your Keycloak client
+        realm: 'master', 
+        clientId: 'angularapp', 
       },
-      enableBearerInterceptor: true, // Enable Bearer token interceptor
+      enableBearerInterceptor: true,
       bearerPrefix: 'Bearer',
       bearerExcludedUrls: ['/'],
       initOptions: {
-        onLoad: 'check-sso', 
+        onLoad: 'login-required', 
         silentCheckSsoRedirectUri: window.location.origin,
         checkLoginIframe: false
       }

@@ -32,7 +32,7 @@ import { CommonModule } from "@angular/common";
             class="nav-icon"
           /></button>
           <div class="dropdown-menu">
-            <a href="/bookappt" class="dropdown-item">Make Appointment</a>
+            <a href="/bookappt" class="dropdown-item">Book Appointment</a>
             <a href="/viewappt-patient" class="dropdown-item">View Appointment</a>
             <a href="#postpone" class="dropdown-item">Postpone Appointment</a>
             <a href="#cancel" class="dropdown-item">Cancel Appointment</a>
@@ -117,7 +117,7 @@ import { CommonModule } from "@angular/common";
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       z-index: 1;
       border-radius: 10px;
-      min-width: 200px; /* Optional: Set a minimum width for the dropdown */
+      min-width: 200px; 
     }
     .nav-dropdown:hover .dropdown-menu {
       display: block;
@@ -125,8 +125,8 @@ import { CommonModule } from "@angular/common";
     .dropdown-item {
       color: inherit;
       text-decoration: none;
-      padding: 15px 50px; /* Reduced padding */
-      font-size: 16px; /* Reduced font size */
+      padding: 15px 50px; 
+      font-size: 16px; 
       display: block;
     }
     .dropdown-item:hover {

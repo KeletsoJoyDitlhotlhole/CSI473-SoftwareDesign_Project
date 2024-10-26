@@ -1,5 +1,8 @@
 import { Component } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, Location } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-record-payment",
@@ -35,36 +38,36 @@ import { CommonModule } from "@angular/common";
           <span class="user-name">John Doe</span>
         </div>
       </aside>
+
+      
       <main class="main-content">
         <h2 class="page-title">Record Payment</h2>
-        <form class="payment-form">
+        <form class="payment-form" (ngSubmit)="onSubmit()">
           <div class="form-row">
             <div class="form-group">
               <label for="patientName" class="form-label">Patient Name:</label>
               <div class="input-wrapper">
-                <select id="patientName" class="form-select">
-                  <option value="">Select patient</option>
-                </select>
+                <input type="text" id="patientName" class="form-input"  name="fullName" [(ngModel)]="paymentData.fullName"/>
               </div>
             </div>
             <div class="form-group">
               <label for="date" class="form-label">Date:</label>
               <div class="input-wrapper">
-                <input type="date" id="date" class="form-input" />
+                <input type="date" id="date" class="form-input" name="date" [(ngModel)]="paymentData.date"/>
               </div>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="patientNumber" class="form-label">Patient Number:</label>
+              <label for="patientUsername" class="form-label">Patient Username:</label>
               <div class="input-wrapper">
-                <input type="text" id="patientNumber" class="form-input" />
+                <input type="text" id="patientUsername" class="form-input" name="username" [(ngModel)]="paymentData.username"/>
               </div>
             </div>
             <div class="form-group">
-              <label for="time" class="form-label">Time:</label>
+              <label for="amount" class="form-label">Amount:</label>
               <div class="input-wrapper">
-                <input type="time" id="time" class="form-input" />
+                <input type="number" id="amount" name="amount" class="form-input" min="0" step="0.01" [(ngModel)]="paymentData.amount"/>
               </div>
             </div>
           </div>
@@ -72,15 +75,17 @@ import { CommonModule } from "@angular/common";
             <div class="form-group">
               <label for="doctorName" class="form-label">Doctor's Name:</label>
               <div class="input-wrapper">
-                <select id="doctorName" class="form-select">
-                  <option value="">Select doctor</option>
+                <select id="doctorName" class="form-select" name="doctorName" [(ngModel)]="paymentData.doctorName">
+                  <option value="Nkamo Lepodisi">Nkamo Lepodisi</option>
+                  <option value="Sheila OReilly">Sheila OReilly</option>
+                  <option value="Jack Smith">Jack Smith</option>
                 </select>
               </div>
             </div>
             <div class="form-group">
-              <label for="amount" class="form-label">Amount:</label>
+              <label for="outstanding" class="form-label">Outstanding:</label>
               <div class="input-wrapper">
-                <input type="number" id="amount" class="form-input" min="0" step="0.01" />
+                <input type="number" id="outstanding" class="form-input" name="outstandingBalance" min="0" step="0.01" [(ngModel)]="paymentData.outstandingBalance"/>
               </div>
             </div>
           </div>
@@ -88,16 +93,22 @@ import { CommonModule } from "@angular/common";
             <div class="form-group">
               <label for="doctorSpecialty" class="form-label">Doctor's Specialty:</label>
               <div class="input-wrapper">
-                <select id="doctorSpecialty" class="form-select">
-                  <option value="">Select specialty</option>
+                <select id="doctorSpecialty" class="form-select" name="doctorSpecialty" [(ngModel)]="paymentData.doctorSpecialty">
+                  <option value="General Consultation">General Consultation</option>
+                  <option value="Review">Review</option>
+                  <option value="General Screening">General Screening</option>
+                  <option value="Dentistry">Dentistry</option>
+                  <option value="Psychology">Psychology</option>
                 </select>
               </div>
             </div>
             <div class="form-group">
               <label for="paymentMethod" class="form-label">Payment Method:</label>
               <div class="input-wrapper">
-                <select id="paymentMethod" class="form-select">
-                  <option value="">Select payment method</option>
+                <select id="paymentMethod" class="form-select" name="paymentMethod" [(ngModel)]="paymentData.paymentMethod">
+                  <option value="Cash">Cash</option>
+                  <option value="Debit Card">Debit Card</option>
+                  <option value="Credit Card">Credit Card</option>
                 </select>
               </div>
             </div>
@@ -259,6 +270,58 @@ import { CommonModule } from "@angular/common";
     }
   `],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
-export class RecordPaymentComponent {}
+export class RecordPaymentComponent {
+  paymentData = {
+    username: '',
+    fullName: '',
+    doctorName: '',
+    doctorSpecialty: '',
+    date: '',
+    amount:'',
+    outstandingBalance: '',
+    paymentMethod: ''
+  };
+
+  message: string | null = null;
+  success: boolean = false;
+
+  constructor(private http: HttpClient, private router: Router, private location: Location) {}
+
+  onSubmit() {
+    if (!this.paymentData.username || !this.paymentData.fullName || !this.paymentData.amount || !this.paymentData.paymentMethod) {
+      this.message = "Please fill in all required fields.";
+      return;
+    }
+
+    const formData = new FormData();
+    Object.keys(this.paymentData).forEach(key => formData.append(key, this.paymentData[key as keyof typeof this.paymentData]));
+
+    this.http.post('http://localhost:3000/src/app/office-assistant-dashboard/record-payment/recordpayment.php', formData)
+      .subscribe({
+        next: (response: any) => {
+          this.message = response.message;
+          this.success = response.success;
+
+          if (response.success) {
+            alert(this.message + " You will be redirected back to the home page.");
+            setTimeout(() => {
+              this.location.back();
+            }, 4000);
+          } else {
+    
+            alert("Error: " + this.message);
+          }
+        },
+        error: (error) => {
+          this.message = "An error occurred recording the appointment. Please try again.";
+          alert(this.message);
+          setTimeout(() => {
+            this.location.back();;
+          }, 4000);
+        }
+      });
+  }
+  
+}

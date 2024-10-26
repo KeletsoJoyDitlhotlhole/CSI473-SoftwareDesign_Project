@@ -58,7 +58,7 @@ export class Sidebar {
 
   // Method to log out of Keycloak
   logout() {
-    this.keycloakService.logout(window.location.origin);  // Redirects to homepage after logout
+    this.keycloakService.logout(window.location.origin); 
   }
   
 }

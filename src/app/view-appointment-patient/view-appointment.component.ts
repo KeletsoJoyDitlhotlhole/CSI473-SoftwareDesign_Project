@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { KeycloakService } from "keycloak-angular";
 
 @Component({
   selector: "app-view-appointment",
@@ -33,12 +35,17 @@ import { CommonModule } from "@angular/common";
       <h2 class="section-title">View Appointments</h2>
       <section class="appointment-table">
         <div class="table-header">
-          <span>Name</span>
-          <span>Details</span>
-          <span>Date&Time</span>
-          <span class="status-header">Status</span>
+          <span class="header-cell">App No.</span>
+          <span class="header-cell">Name</span>
+          <span class="header-cell">Details</span>
+          <span class="header-cell">Doctor</span>
         </div>
-        <!-- Table content would go here -->
+        <div *ngFor="let appointment of appointments" class="appointment-row">
+          <span class="appointment-cell">{{ appointment.appReference }}</span>
+          <span class="appointment-cell">{{ fullName }}</span>
+          <span class="appointment-cell">{{ appointment.appDate }}, {{ appointment.appTime }} - {{ appointment.appType }}</span>
+          <span class="appointment-cell">{{ appointment.doctor }}</span>
+        </div>
       </section>
     </main>
   `,
@@ -151,24 +158,37 @@ import { CommonModule } from "@angular/common";
     .appointment-table {
       background-color: #FFF;
       display: flex;
+      flex-direction: column;
       margin-top: 38px;
       width: 100%;
       max-width: 1323px;
-      align-items: start;
-      gap: 40px 100px;
       color: #000;
-      white-space: nowrap;
-      padding: 9px 29px 535px;
+      padding: 20px;
       font: 400 18px Inter, sans-serif;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
     .table-header {
       display: flex;
-      width: 100%;
-      justify-content: space-between;
+      font-weight: bold;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
     }
-    .status-header {
-      flex-grow: 1;
-      width: 286px;
+    .header-cell {
+      flex: 1;
+      text-align: left;
+      padding: 10px;
+    }
+    .appointment-row {
+      display: flex;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+      align-items: center;
+    }
+    .appointment-cell {
+      flex: 1;
+      text-align: left;
+      padding: 10px;
     }
     @media (max-width: 991px) {
       .view-appointment-patient {
@@ -199,7 +219,6 @@ import { CommonModule } from "@angular/common";
       }
       .appointment-table {
         max-width: 100%;
-        white-space: initial;
         padding: 0 20px 100px;
       }
     }
@@ -207,4 +226,38 @@ import { CommonModule } from "@angular/common";
   standalone: true,
   imports: [CommonModule],
 })
-export class ViewAppointmentComponent {}
+export class ViewAppointmentComponent {
+  appointments: any[] = [];
+  username: string = '';
+  firstName: string = '';
+  lastName: string = '';
+  fullName: string = '';
+
+  constructor(private http: HttpClient, private keycloakService: KeycloakService) {}
+
+  ngOnInit() {
+    const isLoggedIn = this.keycloakService.isLoggedIn();
+    if (isLoggedIn) {
+      this.keycloakService.loadUserProfile().then(profile => {
+        this.username = profile.username || '';
+        this.firstName = profile.firstName!;
+        this.lastName = profile.lastName!;
+        this.fullName = `${this.firstName} ${this.lastName}`;
+        this.fetchAppointments(this.username);
+      }).catch(error => {
+        console.error('Error loading user profile', error);
+      });
+    } else {
+      console.error('User is not logged in');
+    }
+  }
+
+  fetchAppointments(username: string) {
+    this.http.get<any[]>(`http://localhost:3000/src/app/view-appointment-patient/viewappt.php?username=${username}`)
+      .subscribe((data: any[]) => {
+        this.appointments = data;
+      }, error => {
+        console.error('Error fetching appointments:', error);
+      });
+  }
+}

@@ -18,7 +18,13 @@ import { CommonModule } from "@angular/common";
       <nav class="main-nav">
         <ul class="nav-list">
           <li class="nav-item active"><a href="#appointments">Appointments</a></li>
-          <li class="nav-item"><a href="#payments">Payments</a></li>
+          <div class="nav-dropdown">
+            <li class="nav-item"><a href="#">Payments</a></li>
+            <div class="dropdown-menu">
+              <a href="/recordpayment" class="dropdown-item">Record Payment</a>
+              <a href="/viewpayment" class="dropdown-item">View Payments</a>
+            </div>
+          </div>
           <li class="nav-item"><a href="#claims">Claims</a></li>
           <li class="nav-item"><a href="#statistics">Statistics</a></li>
           <li class="nav-item"><a href="#patients">Patients</a></li>
@@ -27,6 +33,40 @@ import { CommonModule } from "@angular/common";
     </header>
   `,
   styles: [`
+  .nav-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-toggle {
+      color: #000;
+      font: 500 24px Inter; 
+      background: none; 
+    
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 10px;
+      top: 20px; 
+      min-width: 200px;
+    }
+    .nav-dropdown:hover .dropdown-menu {
+      display: block;
+      
+    }
+    .dropdown-item {
+      color: inherit;
+      text-decoration: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      display: block;
+    }
+    .dropdown-item:hover {
+      background-color: #8DC3DF;
+    }
     .header {
       background-color: #8DC3DF;
       padding: 24px 58px 9px 17px;

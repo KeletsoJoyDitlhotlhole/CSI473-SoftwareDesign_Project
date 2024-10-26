@@ -1,30 +1,39 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-appointment-form",
   standalone: true,
+  imports: [CommonModule, FormsModule],
   template: `
     <form class="appointment-form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="date" class="form-label">Date:</label>
         <div class="input-wrapper">
-          <input type="date" id="date" name="date" required class="form-input" />
+          <input type="date" id="date" name="appDate" required class="form-input" [(ngModel)]="appointmentData.appDate" />
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/909a122dae37e2e88c9031f526d376d6b557e45f49839b236a21026bec91ed7f?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="" class="input-icon" />
         </div>
       </div>
       <div class="form-group">
         <label for="time" class="form-label">Time:</label>
         <div class="input-wrapper">
-          <input type="time" id="time" name="time"  required class="form-input" />
+          <input type="time" id="time" name="appTime"  required class="form-input" [(ngModel)]="appointmentData.appTime" />
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/909a122dae37e2e88c9031f526d376d6b557e45f49839b236a21026bec91ed7f?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="" class="input-icon" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="patient" class="form-label">Patient username:</label>
+        <div class="input-wrapper">
+          <input type="text" id="patient" name="patient"  required class="form-input" placeholder="Patient username" [(ngModel)]="appointmentData.patient" />
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/909a122dae37e2e88c9031f526d376d6b557e45f49839b236a21026bec91ed7f?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="" class="input-icon" />
         </div>
       </div>
       <div class="form-group">
         <label for="doctorName" class="form-label">Doctor's Name:</label>
         <div class="input-wrapper">
-          <select id="doctorName" name="doctorName"  required class="form-input">
+          <select id="doctorName" name="doctor"  required class="form-input" [(ngModel)]="appointmentData.doctor">
             <option value="" disabled selected>Select a doctor</option>
             <option value="Sheila O'Reilly">Sheila O'Reilly</option>
             <option value="Nkamo Lepodisi">Nkamo Lepodisi</option>
@@ -37,7 +46,7 @@ import { FormsModule } from "@angular/forms";
       <div class="form-group">
         <label for="specialty" class="form-label">Doctor's Specialty:</label>
         <div class="input-wrapper">
-          <select id="specialty" name="specialty"  required class="form-input">
+          <select id="specialty" name="appType"  required class="form-input" [(ngModel)]="appointmentData.appType">
             <option value="" disabled selected>Select a specialty</option>
             <option value="General Consultation">General Consultation</option>
             <option value="Review">Review</option>
@@ -79,7 +88,7 @@ import { FormsModule } from "@angular/forms";
       border: none;
       outline: none;
       font: 400 1rem Inter, sans-serif;
-      width: 200px; /* Set a fixed width for all input fields */
+      width: 200px; 
     }
     .input-icon {
       width: 30px;
@@ -113,14 +122,51 @@ import { FormsModule } from "@angular/forms";
 })
 export class AppointmentFormComponent {
   appointmentData = {
-    date: '',
-    time: '',
-    doctorName: '',
-    specialty: ''
+    appDate: '',
+    appTime: '',
+    patient: '',
+    doctor: '',
+    appType: ''
   };
 
+  message: string | null = null;
+  success: boolean = false;
+
+  constructor(private http: HttpClient) {}
+
   onSubmit() {
-    console.log('Appointment Data:', this.appointmentData);
-    // Handle form submission logic here
+    const formData = new FormData();
+    formData.append('appDate', this.appointmentData.appDate);
+    formData.append('appTime', this.appointmentData.appTime);
+    formData.append('patient', this.appointmentData.patient);
+    formData.append('doctor', this.appointmentData.doctor);
+    formData.append('appType', this.appointmentData.appType);
+
+    this.http.post('http://localhost:3000/src/app/book-appointment/bookappt.php', formData)
+      .subscribe({
+        next: (response: any) => {
+          this.message = response.message;
+          this.success = response.success;
+
+          if (response.success) {
+            // Redirect after a delay
+            alert(response.message + "You will be redirected back to home page");
+            setTimeout(() => {
+              window.location.href = 'http://localhost:4200/';
+            }, 3000); 
+          } else {
+          }
+        },
+        error: (error) => {
+          this.message = "An error occurred while booking the appointment. You will be redirected in a few seconds.";
+          alert(this.message);
+          this.success = false;
+          setTimeout(() => {
+            window.location.href = 'http://localhost:4200/';
+          }, 3000);
+        }
+      });
   }
+
+  
 }

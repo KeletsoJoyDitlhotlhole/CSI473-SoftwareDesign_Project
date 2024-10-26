@@ -63,6 +63,6 @@ import { KeycloakService } from "keycloak-angular";
 export class Sidebar {
   constructor(private keycloakService: KeycloakService) {}
   logout() {
-    this.keycloakService.logout(window.location.origin);  // Redirects to homepage after logout
+    this.keycloakService.logout(window.location.origin);  
   }
 }

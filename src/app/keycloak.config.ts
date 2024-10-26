@@ -5,11 +5,12 @@ export function initializeKeycloak(keycloak: KeycloakService) {
     keycloak.init({
       config: {
         url: 'http://localhost:8080', // Keycloak server URL
-        realm: 'master', // Replace with your Keycloak realm
-        clientId: 'angularapp', // Replace with your Keycloak client
+        realm: 'master', 
+        clientId: 'angularapp', 
       },
       initOptions: {
-        onLoad: 'check-sso', // Redirect to login if not authenticated
+        onLoad: 'login-required', // Redirect to login if not authenticated
+        silentCheckSsoRedirectUri: window.location.origin,
         checkLoginIframe: false
       },
       loadUserProfileAtStartUp: true
