@@ -15,16 +15,16 @@ import { ViewPaymentComponent } from './office-assistant-dashboard/view-payment/
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent}, 
-    { path: 'login', component: LoginPageComponent, canActivate: [AuthGuard], data: { roles: ['Patient']}},
-    {path: 'patientdashboard', component: PatientDashboard, canActivate: [AuthGuard], data: { roles: ['Patient']}},
-    {path: 'doctordashboard', component: DoctorsDashboard, canActivate: [AuthGuard], data: { roles: ['Doctor']}},
-    {path: 'office-assistant-dashboard', component: OfficeAssistantDashboard, canActivate: [AuthGuard], data: { roles: ['OfficeAssistant']}},
+    { path: 'login', component: LoginPageComponent},
+    {path: 'patientdashboard', component: PatientDashboard},
+    {path: 'doctordashboard', component: DoctorsDashboard},
+    {path: 'office-assistant-dashboard', component: OfficeAssistantDashboard},
     {path: 'bookappt', component: BookAppointmentComponent},
-    {path: 'viewappt-patient', component: ViewAppointmentComponent, canActivate: [AuthGuard], data: { roles: ['Patient']}},
-    {path: 'medrecord', component: MedicalRecordComponent, canActivate: [AuthGuard], data: { roles: ['Doctor']}},
-    {path: 'viewrecords', component: ViewRecordsComponent, canActivate: [AuthGuard], data: { roles: ['Doctor']}},
-    {path: 'recordpayment', component: RecordPaymentComponent, canActivate: [AuthGuard], data: { roles: ['OfficeAssistant']}},
-    {path: 'viewpayment', component: ViewPaymentComponent , canActivate: [AuthGuard], data: { roles: ['OfficeAssistant']}}  
+    {path: 'viewappt-patient', component: ViewAppointmentComponent},
+    {path: 'medrecord', component: MedicalRecordComponent},
+    {path: 'viewrecords', component: ViewRecordsComponent},
+    {path: 'recordpayment', component: RecordPaymentComponent},
+    {path: 'viewpayment', component: ViewPaymentComponent}  
 ];
 
 @NgModule({
