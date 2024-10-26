@@ -1,8 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule, Location } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
+import { KeycloakService } from "keycloak-angular";
 
 @Component({
   selector: "app-record-payment",
@@ -35,7 +36,7 @@ import { Router } from '@angular/router';
         <h2 class="sidebar-title">Patients</h2>
         <div class="user-profile">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/81c8ee9cff1836e4ee0e6d980eaa840870f3f564563e19eeec62e5c3ef155d59?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="John Doe profile picture" class="profile-image" />
-          <span class="user-name">John Doe</span>
+          <span class="user-name">{{fullName}}</span>
         </div>
       </aside>
 
@@ -272,7 +273,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
-export class RecordPaymentComponent {
+export class RecordPaymentComponent implements OnInit{
   paymentData = {
     username: '',
     fullName: '',
@@ -286,8 +287,26 @@ export class RecordPaymentComponent {
 
   message: string | null = null;
   success: boolean = false;
+  firstName: string = '';
+  lastName: string = '';
+  fullName: string = '';
 
-  constructor(private http: HttpClient, private router: Router, private location: Location) {}
+  constructor(private http: HttpClient, private router: Router, private location: Location, private keycloakService: KeycloakService) {}
+
+  ngOnInit() {
+    const isLoggedIn = this.keycloakService.isLoggedIn();
+    if (isLoggedIn) {
+      this.keycloakService.loadUserProfile().then(profile => {
+        this.firstName = profile.firstName!;
+        this.lastName = profile.lastName!;
+        this.fullName = `${this.firstName} ${this.lastName}`;
+      }).catch(error => {
+        console.error('Error loading user profile', error);
+      });
+    } else {
+      console.error('User is not logged in');
+    }
+  }
 
   onSubmit() {
     if (!this.paymentData.username || !this.paymentData.fullName || !this.paymentData.amount || !this.paymentData.paymentMethod) {

@@ -17,7 +17,7 @@ import { KeycloakService } from "keycloak-angular";
             <h1 class="clinic-name">MEDISAFE PRIVATE CLINIC</h1>
             <div class="user-info">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/81c8ee9cff1836e4ee0e6d980eaa840870f3f564563e19eeec62e5c3ef155d59?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="User Avatar" class="user-avatar" />
-              <span class="user-name">John Doe</span>
+              <span class="user-name">{{fullName}}</span>
             </div>
           </div>
           <nav class="navigation">

@@ -12,6 +12,7 @@ import { MedicalRecordComponent } from './doctor-dashboard/medical-record/medica
 import { RecordPaymentComponent } from './office-assistant-dashboard/record-payment/record-payment.component';
 import { ViewRecordsComponent } from './doctor-dashboard/view-records/viewrecords.component';
 import { ViewPaymentComponent } from './office-assistant-dashboard/view-payment/view-payment.component';
+import { MakePaymentComponent } from './patient-dashboard/payments/payment.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent}, 
@@ -24,7 +25,8 @@ export const routes: Routes = [
     {path: 'medrecord', component: MedicalRecordComponent},
     {path: 'viewrecords', component: ViewRecordsComponent},
     {path: 'recordpayment', component: RecordPaymentComponent},
-    {path: 'viewpayment', component: ViewPaymentComponent}  
+    {path: 'viewpayment', component: ViewPaymentComponent},
+    {path: 'makepayment', component: MakePaymentComponent}    
 ];
 
 @NgModule({

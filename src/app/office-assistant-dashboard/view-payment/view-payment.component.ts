@@ -1,7 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { KeycloakService } from "keycloak-angular";
 
 @Component({
   selector: "app-view-payment",
@@ -17,7 +18,7 @@ import { FormsModule } from "@angular/forms";
             <h1 class="clinic-name">MEDISAFE PRIVATE CLINIC</h1>
             <div class="user-info">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/81c8ee9cff1836e4ee0e6d980eaa840870f3f564563e19eeec62e5c3ef155d59?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="User Avatar" class="user-avatar" />
-              
+              <span class="user-name">{{fullName}}</span>
             </div>
           </div>
           <nav class="navigation">
@@ -180,11 +181,29 @@ import { FormsModule } from "@angular/forms";
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
-export class ViewPaymentComponent {
+export class ViewPaymentComponent implements OnInit {
   paymentRecords: any[] = [];
   username = '';
+  firstName: string = '';
+  lastName: string = '';
+  fullName: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private keycloakService: KeycloakService) {}
+
+  ngOnInit() {
+    const isLoggedIn = this.keycloakService.isLoggedIn();
+    if (isLoggedIn) {
+      this.keycloakService.loadUserProfile().then(profile => {
+        this.firstName = profile.firstName!;
+        this.lastName = profile.lastName!;
+        this.fullName = `${this.firstName} ${this.lastName}`;
+      }).catch(error => {
+        console.error('Error loading user profile', error);
+      });
+    } else {
+      console.error('User is not logged in');
+    }
+  }
 
   onSubmit() {
     this.http.get<any>(`http://localhost:3000/src/app/office-assistant-dashboard/view-payment/viewpayments.php?username=${this.username}`)

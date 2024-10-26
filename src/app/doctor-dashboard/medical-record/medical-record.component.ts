@@ -7,6 +7,7 @@ import { ExaminationFindingsComponent } from "./exam-findings.component";
 import { NotesComponent } from "./notes.component";
 import { HttpClient } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { KeycloakService } from "keycloak-angular";
 
 @Component({
   selector: "medical-record",
@@ -20,7 +21,7 @@ import { FormsModule } from "@angular/forms";
         </div>
         <div class="user-info">
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/81c8ee9cff1836e4ee0e6d980eaa840870f3f564563e19eeec62e5c3ef155d59?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="User Avatar" class="user-avatar" />
-          <span class="user-name">John Doe</span>
+          <span class="user-name">{{fullName}}</span>
         </div>
         </div>
       </header>
@@ -263,7 +264,27 @@ export class MedicalRecordComponent {
     notes: ''
   };
 
-  constructor(private http: HttpClient) {}
+  firstName: string = '';
+  lastName: string = '';
+  fullName: string = '';
+
+  constructor(private http: HttpClient, private keycloakService: KeycloakService) {}
+
+  ngOnInit() {
+    const isLoggedIn = this.keycloakService.isLoggedIn();
+    if (isLoggedIn) {
+      this.keycloakService.loadUserProfile().then(profile => {
+        this.firstName = profile.firstName!;
+        this.lastName = profile.lastName!;
+        this.fullName = `${this.firstName} ${this.lastName}`;
+      }).catch(error => {
+        console.error('Error loading user profile', error);
+      });
+    } else {
+      console.error('User is not logged in');
+    }
+  }
+
 
   onSubmit() {
     const formData = new FormData();

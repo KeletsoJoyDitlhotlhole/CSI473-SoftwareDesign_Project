@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { KeycloakService } from "keycloak-angular";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-header",
@@ -30,7 +32,7 @@ import { CommonModule } from "@angular/common";
           <div class="user-icons">
              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/81c8ee9cff1836e4ee0e6d980eaa840870f3f564563e19eeec62e5c3ef155d59?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c" alt="User profile picture" class="user-avatar" />
           </div>
-          <span class="user-name">John Doe</span>
+          <span class="user-name">{{fullName}}</span>
         </div>
       </div>
     </header>
@@ -175,4 +177,25 @@ import { CommonModule } from "@angular/common";
   standalone: true,
   imports: [CommonModule],
 })
-export class Header {}
+export class Header {
+  firstName: string = '';
+  lastName: string = '';
+  fullName: string = '';
+
+  constructor(private http: HttpClient, private keycloakService: KeycloakService) {}
+
+  ngOnInit() {
+    const isLoggedIn = this.keycloakService.isLoggedIn();
+    if (isLoggedIn) {
+      this.keycloakService.loadUserProfile().then(profile => {
+        this.firstName = profile.firstName!;
+        this.lastName = profile.lastName!;
+        this.fullName = `${this.firstName} ${this.lastName}`;
+      }).catch(error => {
+        console.error('Error loading user profile', error);
+      });
+    } else {
+      console.error('User is not logged in');
+    }
+  }
+}

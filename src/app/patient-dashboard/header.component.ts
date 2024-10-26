@@ -1,5 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { KeycloakService } from "keycloak-angular";
 
 @Component({
   selector: "app-header",
@@ -20,7 +22,7 @@ import { CommonModule } from "@angular/common";
             alt="User profile picture"
             class="profile-image"
           />
-          <span class="user-name">John Doe</span>
+          <span class="user-name">{{fullName}}</span>
         </div>
       </div>
       <nav class="navigation">
@@ -38,14 +40,18 @@ import { CommonModule } from "@angular/common";
             <a href="#cancel" class="dropdown-item">Cancel Appointment</a>
           </div>
         </div>
-        <a href="#payments" class="nav-link">
-          Payments
-          <img
+
+        <div class="nav-dropdown">
+          <button class="nav-link dropdown-toggle">Payments <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/909a122dae37e2e88c9031f526d376d6b557e45f49839b236a21026bec91ed7f?placeholderIfAbsent=true&apiKey=a6e250b3254f4a399504301b58300c8c"
             alt=""
             class="nav-icon"
-          />
-        </a>
+          /></button>
+          <div class="dropdown-menu">
+            <a href="/makepayment" class="dropdown-item">Make payment</a>
+          </div>
+        </div>
+
       </nav>
     </header>
   `,
@@ -160,4 +166,25 @@ import { CommonModule } from "@angular/common";
   standalone: true,
   imports: [CommonModule],
 })
-export class Header {}
+export class Header implements OnInit{
+  firstName: string = '';
+  lastName: string = '';
+  fullName: string = '';
+
+  constructor(private http: HttpClient, private keycloakService: KeycloakService) {}
+
+  ngOnInit() {
+    const isLoggedIn = this.keycloakService.isLoggedIn();
+    if (isLoggedIn) {
+      this.keycloakService.loadUserProfile().then(profile => {
+        this.firstName = profile.firstName!;
+        this.lastName = profile.lastName!;
+        this.fullName = `${this.firstName} ${this.lastName}`;
+      }).catch(error => {
+        console.error('Error loading user profile', error);
+      });
+    } else {
+      console.error('User is not logged in');
+    }
+  }
+}
